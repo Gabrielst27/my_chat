@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 final darkColorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,
-  seedColor: Color.fromARGB(255, 4, 3, 71),
-  surface: Color.fromARGB(255, 36, 39, 59),
+  seedColor: Color.fromARGB(255, 0, 10, 148),
 );
 
-final theme = ThemeData().copyWith(
+final darkTheme = ThemeData().copyWith(
   colorScheme: darkColorScheme,
   scaffoldBackgroundColor: darkColorScheme.secondaryContainer,
   appBarTheme: AppBarTheme().copyWith(
@@ -14,5 +13,8 @@ final theme = ThemeData().copyWith(
   ),
   inputDecorationTheme: InputDecorationTheme().copyWith(
     labelStyle: TextStyle(fontSize: 14),
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(backgroundColor: darkColorScheme.onPrimary),
   ),
 );

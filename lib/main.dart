@@ -11,6 +11,10 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(theme: theme, home: const AuthScreen());
+    return MaterialApp(
+      darkTheme: darkTheme,
+      themeMode: ThemeMode.dark,
+      home: const AuthScreen(),
+    );
   }
 }
