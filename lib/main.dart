@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_chat/screens/auth_screen.dart';
 import 'package:my_chat/theme.dart';
 
 void main() {
@@ -10,9 +11,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: theme,
-      home: const Placeholder(),
-    );
+    return MaterialApp(theme: theme, home: const AuthScreen());
   }
 }
