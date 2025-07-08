@@ -71,7 +71,9 @@ class _AuthScreenState extends State<AuthScreen> {
                       _isLogin ? 'Bem-vindo de volta!' : 'Crie sua conta',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.primary.withAlpha(255),
                       ),
                     ),
                   ),

@@ -7,7 +7,7 @@ final darkColorScheme = ColorScheme.fromSeed(
 
 final darkTheme = ThemeData().copyWith(
   colorScheme: darkColorScheme,
-  scaffoldBackgroundColor: darkColorScheme.secondaryContainer,
+  scaffoldBackgroundColor: darkColorScheme.surface,
   appBarTheme: AppBarTheme().copyWith(
     backgroundColor: darkColorScheme.onSecondary,
   ),
@@ -15,9 +15,12 @@ final darkTheme = ThemeData().copyWith(
     labelStyle: TextStyle(fontSize: 14),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(backgroundColor: darkColorScheme.onPrimary),
+    style: ElevatedButton.styleFrom(
+      backgroundColor: darkColorScheme.onPrimaryFixed,
+    ),
   ),
   textTheme: TextTheme().copyWith(
     titleLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
   ),
+  cardTheme: CardThemeData().copyWith(color: darkColorScheme.onSecondary),
 );
