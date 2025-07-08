@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_chat/widgets/auth_form.dart';
+
+final _firebase = FirebaseAuth.instance;
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -10,9 +13,35 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   bool _isLogin = true;
-  void _submit(String email, String password) {
+  bool _isLoading = false;
+
+  void _submit(String email, String password) async {
     if (_isLogin) {}
-    if (!_isLogin) {}
+    if (!_isLogin) {
+      try {
+        setState(() {
+          _isLoading = true;
+        });
+        final userCredentials = await _firebase.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        setState(() {
+          _isLoading = false;
+        });
+      } on FirebaseAuthException catch (error) {
+        setState(() {
+          _isLoading = false;
+        });
+        if (!context.mounted) {
+          return;
+        }
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(error.message ?? 'Falha de autenticação')),
+        );
+      }
+    }
   }
 
   @override
@@ -49,15 +78,18 @@ class _AuthScreenState extends State<AuthScreen> {
                   SingleChildScrollView(
                     child: AuthForm(
                       isLogin: _isLogin,
+                      isLoading: _isLoading,
                       submit: _submit,
                     ),
                   ),
                   TextButton(
-                    onPressed: () {
-                      setState(() {
-                        _isLogin = !_isLogin;
-                      });
-                    },
+                    onPressed: _isLoading
+                        ? null
+                        : () {
+                            setState(() {
+                              _isLogin = !_isLogin;
+                            });
+                          },
                     child: Text(
                       _isLogin ? 'Criar conta' : 'Já possuo uma conta',
                     ),

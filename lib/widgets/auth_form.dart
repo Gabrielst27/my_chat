@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
-  const AuthForm({super.key, required this.submit, required this.isLogin});
+  const AuthForm({
+    super.key,
+    required this.submit,
+    required this.isLogin,
+    required this.isLoading,
+  });
 
   final Function(String email, String password) submit;
   final bool isLogin;
+  final bool isLoading;
 
   @override
   State<AuthForm> createState() => _AuthFormState();
@@ -32,6 +38,7 @@ class _AuthFormState extends State<AuthForm> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextFormField(
+            enabled: !widget.isLoading,
             style: TextStyle(
               color: Theme.of(context).colorScheme.primary,
             ),
@@ -52,6 +59,7 @@ class _AuthFormState extends State<AuthForm> {
             onSaved: (newValue) => _enteredEmail = newValue!,
           ),
           TextFormField(
+            enabled: !widget.isLoading,
             controller: _passwordController,
             style: TextStyle(
               color: Theme.of(context).colorScheme.primary,
@@ -70,6 +78,7 @@ class _AuthFormState extends State<AuthForm> {
           widget.isLogin
               ? SizedBox()
               : TextFormField(
+                  enabled: !widget.isLoading,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
                   ),
@@ -86,8 +95,15 @@ class _AuthFormState extends State<AuthForm> {
                 ),
           const SizedBox(height: 16),
           ElevatedButton(
-            onPressed: _submit,
-            child: Text(widget.isLogin ? 'Entrar' : 'Cadastrar'),
+            onPressed: widget.isLoading ? null : _submit,
+            child: widget.isLoading
+                ? CircularProgressIndicator(
+                    constraints: BoxConstraints(
+                      minWidth: 16,
+                      minHeight: 16,
+                    ),
+                  )
+                : Text(widget.isLogin ? 'Entrar' : 'Cadastrar'),
           ),
         ],
       ),
