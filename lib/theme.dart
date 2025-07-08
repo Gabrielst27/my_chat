@@ -17,4 +17,7 @@ final darkTheme = ThemeData().copyWith(
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(backgroundColor: darkColorScheme.onPrimary),
   ),
+  textTheme: TextTheme().copyWith(
+    titleLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+  ),
 );

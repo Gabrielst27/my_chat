@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_chat/widgets/auth_form.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -8,19 +9,8 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  final _form = GlobalKey<FormState>();
   bool _isLogin = true;
-  String _enteredEmail = '';
-  String _enteredPassword = '';
-
-  void _submit() {
-    final bool isValid = _form.currentState!.validate();
-    if (isValid) {
-      _form.currentState!.save();
-    }
-    print(_enteredEmail);
-    print(_enteredPassword);
-  }
+  void _submit() {}
 
   @override
   Widget build(BuildContext context) {
@@ -39,68 +29,37 @@ class _AuthScreenState extends State<AuthScreen> {
         child: SingleChildScrollView(
           child: Card(
             margin: const EdgeInsets.all(20),
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Form(
-                  key: _form,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextFormField(
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        decoration: InputDecoration(
-                          label: Text('E-mail'),
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        autocorrect: false,
-                        textCapitalization: TextCapitalization.none,
-                        validator: (value) {
-                          if (value == null ||
-                              value.trim().isEmpty ||
-                              !value.contains('@')) {
-                            return 'Insira um e-mail válido';
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) => _enteredEmail = newValue!,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 48, bottom: 24),
+                    child: Text(
+                      _isLogin ? 'Bem-vindo de volta!' : 'Crie sua conta',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
                       ),
-                      TextFormField(
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        decoration: InputDecoration(
-                          label: Text('Password'),
-                        ),
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.trim().length < 6) {
-                            return 'A senha deve ter pelo menos 6 caracteres';
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) => _enteredPassword = newValue!,
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: _submit,
-                        child: Text(_isLogin ? 'Entrar' : 'Cadastrar'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          setState(() {
-                            _isLogin = !_isLogin;
-                          });
-                        },
-                        child: Text(
-                          _isLogin ? 'Criar conta' : 'Já possuo uma conta',
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                  SingleChildScrollView(
+                    child: AuthForm(
+                      isLogin: _isLogin,
+                      submit: _submit,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        _isLogin = !_isLogin;
+                      });
+                    },
+                    child: Text(
+                      _isLogin ? 'Criar conta' : 'Já possuo uma conta',
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
