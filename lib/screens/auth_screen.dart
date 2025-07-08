@@ -16,12 +16,19 @@ class _AuthScreenState extends State<AuthScreen> {
   bool _isLoading = false;
 
   void _submit(String email, String password) async {
-    if (_isLogin) {}
-    if (!_isLogin) {
-      try {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      if (_isLogin) {
+        final userCredentials = await _firebase.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
         setState(() {
-          _isLoading = true;
+          _isLoading = false;
         });
+      } else {
         final userCredentials = await _firebase.createUserWithEmailAndPassword(
           email: email,
           password: password,
@@ -29,18 +36,18 @@ class _AuthScreenState extends State<AuthScreen> {
         setState(() {
           _isLoading = false;
         });
-      } on FirebaseAuthException catch (error) {
-        setState(() {
-          _isLoading = false;
-        });
-        if (!context.mounted) {
-          return;
-        }
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(error.message ?? 'Falha de autenticação')),
-        );
       }
+    } on FirebaseAuthException catch (error) {
+      setState(() {
+        _isLoading = false;
+      });
+      if (!context.mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(error.message ?? 'Falha de autenticação')),
+      );
     }
   }
 
@@ -62,7 +69,7 @@ class _AuthScreenState extends State<AuthScreen> {
           child: Card(
             margin: const EdgeInsets.all(20),
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
               child: Column(
                 children: [
                   Padding(
