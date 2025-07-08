@@ -1,5 +1,35 @@
 import 'package:flutter/material.dart';
 
+final lightColorScheme = ColorScheme.fromSeed(
+  brightness: Brightness.light,
+  seedColor: Color.fromARGB(255, 0, 10, 148),
+);
+
+final lightTheme = ThemeData().copyWith(
+  colorScheme: lightColorScheme,
+  scaffoldBackgroundColor: lightColorScheme.surface,
+  appBarTheme: AppBarTheme().copyWith(
+    backgroundColor: lightColorScheme.primary,
+    foregroundColor: lightColorScheme.onPrimary,
+  ),
+  inputDecorationTheme: InputDecorationTheme().copyWith(
+    labelStyle: TextStyle(fontSize: 14),
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: lightColorScheme.primary,
+      foregroundColor: lightColorScheme.onPrimary,
+    ),
+  ),
+  textTheme: TextTheme().copyWith(
+    titleLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+  ),
+  cardTheme: CardThemeData().copyWith(
+    color: lightColorScheme.secondaryContainer,
+    surfaceTintColor: lightColorScheme.secondaryContainer,
+  ),
+);
+
 final darkColorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,
   seedColor: Color.fromARGB(255, 0, 10, 148),
