@@ -10,7 +10,10 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   bool _isLogin = true;
-  void _submit() {}
+  void _submit(String email, String password) {
+    if (_isLogin) {}
+    if (!_isLogin) {}
+  }
 
   @override
   Widget build(BuildContext context) {
