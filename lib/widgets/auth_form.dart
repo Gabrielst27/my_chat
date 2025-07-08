@@ -13,16 +13,14 @@ class AuthForm extends StatefulWidget {
 class _AuthFormState extends State<AuthForm> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   String _enteredEmail = '';
-  String _enteredPassword = '';
+  final _passwordController = TextEditingController();
 
   void _submit() {
     bool isValid = _form.currentState!.validate();
     if (isValid) {
       _form.currentState!.save();
+      widget.submit;
     }
-    print(_enteredEmail);
-    print(_enteredPassword);
-    widget.submit;
   }
 
   @override
@@ -53,6 +51,7 @@ class _AuthFormState extends State<AuthForm> {
             onSaved: (newValue) => _enteredEmail = newValue!,
           ),
           TextFormField(
+            controller: _passwordController,
             style: TextStyle(
               color: Theme.of(context).colorScheme.primary,
             ),
@@ -66,8 +65,24 @@ class _AuthFormState extends State<AuthForm> {
               }
               return null;
             },
-            onSaved: (newValue) => _enteredPassword = newValue!,
           ),
+          widget.isLogin
+              ? SizedBox()
+              : TextFormField(
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  decoration: InputDecoration(
+                    label: Text('Confirm password'),
+                  ),
+                  obscureText: true,
+                  validator: (value) {
+                    if (value != _passwordController.text) {
+                      return 'As senhas estão diferentes';
+                    }
+                    return null;
+                  },
+                ),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: _submit,
