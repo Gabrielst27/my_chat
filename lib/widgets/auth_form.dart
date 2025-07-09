@@ -8,7 +8,7 @@ class AuthForm extends StatefulWidget {
     required this.isLoading,
   });
 
-  final Function(String email, String password) submit;
+  final Function(String name, String email, String password) submit;
   final bool isLogin;
   final bool isLoading;
 
@@ -18,6 +18,7 @@ class AuthForm extends StatefulWidget {
 
 class _AuthFormState extends State<AuthForm> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
+  String _enteredName = '';
   String _enteredEmail = '';
   final _passwordController = TextEditingController();
 
@@ -27,7 +28,7 @@ class _AuthFormState extends State<AuthForm> {
       return;
     }
     _form.currentState!.save();
-    widget.submit(_enteredEmail, _passwordController.text);
+    widget.submit(_enteredName, _enteredEmail, _passwordController.text);
   }
 
   @override
@@ -37,6 +38,30 @@ class _AuthFormState extends State<AuthForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (!widget.isLogin)
+            TextFormField(
+              enabled: !widget.isLoading,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              decoration: InputDecoration(
+                label: Text('Nome'),
+                prefixIcon: Icon(Icons.person),
+              ),
+              keyboardType: TextInputType.name,
+              autocorrect: false,
+              textCapitalization: TextCapitalization.words,
+              validator: (value) {
+                if (value == null ||
+                    value.trim().isEmpty ||
+                    value.trim().length < 4 ||
+                    value.trim().length > 32) {
+                  return 'O nome deve ter entre 4 e 32 caracteres';
+                }
+                return null;
+              },
+              onSaved: (newValue) => _enteredName = newValue!,
+            ),
           TextFormField(
             enabled: !widget.isLoading,
             style: TextStyle(
@@ -44,6 +69,7 @@ class _AuthFormState extends State<AuthForm> {
             ),
             decoration: InputDecoration(
               label: Text('E-mail'),
+              prefixIcon: Icon(Icons.email),
             ),
             keyboardType: TextInputType.emailAddress,
             autocorrect: false,
@@ -65,7 +91,8 @@ class _AuthFormState extends State<AuthForm> {
               color: Theme.of(context).colorScheme.primary,
             ),
             decoration: InputDecoration(
-              label: Text('Password'),
+              label: Text('Senha'),
+              prefixIcon: Icon(Icons.password),
             ),
             obscureText: true,
             validator: (value) {
@@ -75,24 +102,24 @@ class _AuthFormState extends State<AuthForm> {
               return null;
             },
           ),
-          widget.isLogin
-              ? SizedBox()
-              : TextFormField(
-                  enabled: !widget.isLoading,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  decoration: InputDecoration(
-                    label: Text('Confirm password'),
-                  ),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value != _passwordController.text) {
-                      return 'As senhas estão diferentes';
-                    }
-                    return null;
-                  },
-                ),
+          if (!widget.isLogin)
+            TextFormField(
+              enabled: !widget.isLoading,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              decoration: InputDecoration(
+                label: Text('Confirme a senha'),
+                prefixIcon: Icon(Icons.password),
+              ),
+              obscureText: true,
+              validator: (value) {
+                if (value != _passwordController.text) {
+                  return 'As senhas estão diferentes';
+                }
+                return null;
+              },
+            ),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: widget.isLoading ? null : _submit,

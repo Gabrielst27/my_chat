@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_chat/widgets/auth_form.dart';
@@ -15,7 +16,7 @@ class _AuthScreenState extends State<AuthScreen> {
   bool _isLogin = true;
   bool _isLoading = false;
 
-  void _submit(String email, String password) async {
+  void _submit(String name, String email, String password) async {
     setState(() {
       _isLoading = true;
     });
@@ -33,6 +34,13 @@ class _AuthScreenState extends State<AuthScreen> {
           email: email,
           password: password,
         );
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredentials.user!.uid)
+            .set({
+              'name': name,
+              'email': email,
+            });
         setState(() {
           _isLoading = false;
         });
