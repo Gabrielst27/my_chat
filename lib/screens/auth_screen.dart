@@ -26,6 +26,7 @@ class _AuthScreenState extends State<AuthScreen> {
           email: email,
           password: password,
         );
+        if (!mounted) return;
         setState(() {
           _isLoading = false;
         });
@@ -41,11 +42,13 @@ class _AuthScreenState extends State<AuthScreen> {
               'name': name,
               'email': email,
             });
+        if (!mounted) return;
         setState(() {
           _isLoading = false;
         });
       }
     } on FirebaseAuthException catch (error) {
+      if (!mounted) return;
       setState(() {
         _isLoading = false;
       });

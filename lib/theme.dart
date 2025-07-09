@@ -42,7 +42,7 @@ final darkTheme = ThemeData().copyWith(
     backgroundColor: darkColorScheme.onSecondary,
   ),
   inputDecorationTheme: InputDecorationTheme().copyWith(
-    labelStyle: TextStyle(fontSize: 14),
+    labelStyle: TextStyle(fontSize: 16),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(

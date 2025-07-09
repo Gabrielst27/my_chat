@@ -22,6 +22,12 @@ class _AuthFormState extends State<AuthForm> {
   String _enteredEmail = '';
   final _passwordController = TextEditingController();
 
+  @override
+  void dispose() {
+    super.dispose();
+    _passwordController.dispose();
+  }
+
   void _submit() {
     bool isValid = _form.currentState!.validate();
     if (!isValid) {
