@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_chat/widgets/auth_form.dart';
 
-final _firebase = FirebaseAuth.instance;
+final _firebaseAuth = FirebaseAuth.instance;
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -22,7 +22,7 @@ class _AuthScreenState extends State<AuthScreen> {
     });
     try {
       if (_isLogin) {
-        final userCredentials = await _firebase.signInWithEmailAndPassword(
+        final userCredentials = await _firebaseAuth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
@@ -31,10 +31,11 @@ class _AuthScreenState extends State<AuthScreen> {
           _isLoading = false;
         });
       } else {
-        final userCredentials = await _firebase.createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
+        final userCredentials = await _firebaseAuth
+            .createUserWithEmailAndPassword(
+              email: email,
+              password: password,
+            );
         await FirebaseFirestore.instance
             .collection('users')
             .doc(userCredentials.user!.uid)

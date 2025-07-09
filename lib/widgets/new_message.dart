@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class NewMessage extends StatefulWidget {
@@ -24,12 +26,25 @@ class _NewMessageState extends State<NewMessage> {
     _messageController.dispose();
   }
 
-  void _submitMessage() {
-    final enteredMessage = _messageController.text;
+  void _submitMessage() async {
+    final enteredMessage = _messageController.text.trim();
+    _messageController.clear();
     if (enteredMessage.trim().isEmpty) {
       return;
     }
-    _messageController.clear();
+    final user = FirebaseAuth.instance.currentUser!;
+    final userData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+    FirebaseFirestore.instance.collection('messages').add({
+      'senderId': user.uid,
+      'senderName': userData.data()!['name'],
+      'receiverId': 'todo',
+      'receiverName': 'todo',
+      'text': enteredMessage,
+      'createdAt': Timestamp.now(),
+    });
   }
 
   @override
@@ -58,7 +73,7 @@ class _NewMessageState extends State<NewMessage> {
                   ),
                   controller: _messageController,
                   enableSuggestions: true,
-                  textCapitalization: TextCapitalization.words,
+                  textCapitalization: TextCapitalization.sentences,
                   decoration: InputDecoration(
                     hintText: 'Digite algo...',
                     border: InputBorder.none,
