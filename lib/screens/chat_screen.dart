@@ -5,7 +5,9 @@ import 'package:my_chat/widgets/chat_messages.dart';
 import 'package:my_chat/widgets/new_message.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
+  final String chatId;
+
+  const ChatScreen({super.key, required this.chatId});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -15,7 +17,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void setupPushNotifications() async {
     final fcm = FirebaseMessaging.instance;
     await fcm.requestPermission();
-    fcm.subscribeToTopic('chat');
+    await fcm.subscribeToTopic('chat');
   }
 
   @override
@@ -38,9 +40,13 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ],
       ),
-      body: const Column(
+      body: Column(
         children: [
-          Expanded(child: ChatMessages()),
+          Expanded(
+            child: ChatMessages(
+              chatId: widget.chatId,
+            ),
+          ),
           NewMessage(),
         ],
       ),
