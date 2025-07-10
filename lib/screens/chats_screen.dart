@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_chat/models/chat_model.dart';
+import 'package:my_chat/widgets/chats_list_item.dart';
 
 class ChatsScreen extends StatefulWidget {
   const ChatsScreen({super.key});
@@ -44,12 +45,18 @@ class _ChatsScreenState extends State<ChatsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Chats'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+            },
+            icon: Icon(Icons.logout),
+          ),
+        ],
       ),
       body: ListView.builder(
         itemCount: chats.length,
-        itemBuilder: (context, index) => ListTile(
-          title: Text(chats[index].id),
-        ),
+        itemBuilder: (context, index) => ChatsListItem(chat: chats[index]),
       ),
     );
   }

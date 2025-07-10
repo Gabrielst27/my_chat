@@ -22,7 +22,8 @@ final lightTheme = ThemeData().copyWith(
     ),
   ),
   textTheme: TextTheme().copyWith(
-    titleLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    titleLarge: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+    titleMedium: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
   ),
   cardTheme: CardThemeData().copyWith(
     color: lightColorScheme.secondaryContainer,
@@ -50,7 +51,8 @@ final darkTheme = ThemeData().copyWith(
     ),
   ),
   textTheme: TextTheme().copyWith(
-    titleLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    titleLarge: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+    titleMedium: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
   ),
   cardTheme: CardThemeData().copyWith(color: darkColorScheme.onSecondary),
 );
