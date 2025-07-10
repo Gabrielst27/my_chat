@@ -82,7 +82,7 @@ class _NewMessageState extends State<NewMessage> {
               ),
             ),
           ),
-          if (_messageController.text.isNotEmpty)
+          if (_messageController.text.trim().isNotEmpty)
             Container(
               margin: EdgeInsets.only(right: 8),
               decoration: BoxDecoration(
