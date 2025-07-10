@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_chat/widgets/chat_message.dart';
 
 class ChatMessages extends StatelessWidget {
   const ChatMessages({super.key});
@@ -32,8 +34,20 @@ class ChatMessages extends StatelessWidget {
           padding: EdgeInsets.only(bottom: 8),
           reverse: true,
           itemCount: loadedMessages.length,
-          itemBuilder: (ctx, index) =>
-              Text(loadedMessages[index].data()['text']),
+          itemBuilder: (ctx, index) {
+            final bool isFirst =
+                index == loadedMessages.length - 1 ||
+                loadedMessages[index].data()['senderId'] !=
+                    loadedMessages[index + 1].data()['senderId'];
+            return ChatMessage(
+              senderName: loadedMessages[index].data()['senderName'],
+              text: loadedMessages[index].data()['text'],
+              isMine:
+                  loadedMessages[index].data()['senderId'] ==
+                  FirebaseAuth.instance.currentUser!.uid,
+              isFirst: isFirst,
+            );
+          },
         );
       },
     );
